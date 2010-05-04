@@ -154,7 +154,9 @@ builtin_reduce(rereduce, [<<"_count">>|BuiltinReds], KVs, Acc) ->
     builtin_reduce(rereduce, BuiltinReds, KVs, [Count|Acc]);
 builtin_reduce(Re, [<<"_stats">>|BuiltinReds], KVs, Acc) ->
     Stats = builtin_stats(Re, KVs),
-    builtin_reduce(Re, BuiltinReds, KVs, [Stats|Acc]).
+    builtin_reduce(Re, BuiltinReds, KVs, [Stats|Acc]);
+builtin_reduce(_, [F|_], _, _) ->
+    throw({undefined_builtin, io_lib:format("no builtin function named '~s'", [F])}).
 
 builtin_sum_rows(KVs) ->
     lists:foldl(fun

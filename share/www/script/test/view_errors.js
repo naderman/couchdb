@@ -74,6 +74,14 @@ couchTests.view_errors = function(debug) {
           T(e.error == "query_parse_error");
       }
 
+      // undefined builtin functions should return a useful error
+      try {
+          db.query(map, "_foobar");
+          T(0 == 1);
+      } catch(e) {
+          T(e.error == "undefined_builtin")
+      }
+
       // reduce=false on map views doesn't work, so group=true will
       // never throw for temp reduce views.
 
